@@ -3,6 +3,7 @@ const express = require("express");
 const path = require("path");
 const fs = require("fs/promises");
 const bodyParser = require("body-parser");
+let id = 1;
 
 // initialize app
 const app = express();
@@ -36,7 +37,7 @@ app.get("/api/notes", async (req, res) => {
 
 // create new post
 app.post("/api/notes", async (req, res) => {
-  const newNote = { title: req.body.title, text: req.body.text };
+  const newNote = { title: req.body.title, text: req.body.text, id: id++ };
 
   try {
     const jsonFile = await fs.readFile("./db/db.json");
