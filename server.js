@@ -1,6 +1,7 @@
 // import npm packages we need
 const express = require("express");
 const path = require("path");
+const fs = require("fs");
 
 // initialize app
 const app = express();
@@ -19,6 +20,17 @@ app.get("/notes", (req, res) => {
 
   //here i send notes.html for client
   res.sendFile(path.join(__dirname, "public", "notes.html"));
+});
+
+// get for /api/notes
+app.get("/api/notes", (req, res) => {
+  fs.readFile("./db/db.json", (err, data) => {
+    if (err) {
+      console.log(err);
+    } else {
+      res.send(JSON.parse(data));
+    }
+  });
 });
 
 // make listening port
