@@ -1,11 +1,13 @@
 // import npm packages we need
 const express = require("express");
 const path = require("path");
-const fs = require("fs");
+const fs = require("fs/promises");
+const bodyParser = require("body-parser");
 
 // initialize app
 const app = express();
 const PORT = process.env.PORT || 3001;
+app.use(bodyParser.json());
 
 // GET request
 // app.get("/", (req, res) => {
@@ -23,14 +25,28 @@ app.get("/notes", (req, res) => {
 });
 
 // get for /api/notes
-app.get("/api/notes", (req, res) => {
-  fs.readFile("./db/db.json", (err, data) => {
-    if (err) {
-      console.log(err);
-    } else {
-      res.send(JSON.parse(data));
-    }
-  });
+app.get("/api/notes", async (req, res) => {
+  try {
+    const data = await fs.readFile("./db/db.json");
+    res.send(JSON.parse(data));
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+// create new post
+app.post("/api/notes", async (req, res) => {
+  const newNote = { title: req.body.title, text: req.body.text };
+
+  try {
+    const jsonFile = await fs.readFile("./db/db.json");
+    let allNotes = JSON.parse(jsonFile);
+    allNotes.push(newNote);
+    await fs.writeFile("./db/db.json", JSON.stringify(allNotes));
+    res.json(allNotes);
+  } catch (error) {
+    console.log(error);
+  }
 });
 
 // make listening port
