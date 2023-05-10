@@ -50,5 +50,21 @@ app.post("/api/notes", async (req, res) => {
   }
 });
 
+// delete a post
+app.delete("/api/notes/:id", async (req, res) => {
+  try {
+    const jsonFile = await fs.readFile("./db/db.json");
+    let allNotes = JSON.parse(jsonFile);
+    const objWithId = allNotes.findIndex((obj) => obj.id === id);
+    if (objWithId > -1) {
+      allNotes.splice(objWithId, 1);
+    }
+    await fs.writeFile("./db/db.json", JSON.stringify(allNotes));
+    res.json(allNotes);
+  } catch (error) {
+    console.log(error);
+  }
+});
+
 // make listening port
 app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
