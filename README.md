@@ -39,7 +39,7 @@ The Note Taker application provides the following features:
 
 ## Deployment
 
-The Note Taker application is deployed on Heroku and can be accessed using the following address: [Note Taker](https://your-heroku-app-address).
+The Note Taker application is deployed on Heroku and can be accessed using the following address: [Note Taker](https://note-taker-client-side-server.herokuapp.com/).
 
 ---
 
