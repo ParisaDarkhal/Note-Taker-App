@@ -55,7 +55,7 @@ app.delete("/api/notes/:id", async (req, res) => {
   try {
     const jsonFile = await fs.readFile("./db/db.json");
     let allNotes = JSON.parse(jsonFile);
-    const objWithId = allNotes.findIndex((obj) => obj.id === id);
+    const objWithId = allNotes.findIndex((obj) => obj.id === +req.params.id);
     if (objWithId > -1) {
       allNotes.splice(objWithId, 1);
     }
